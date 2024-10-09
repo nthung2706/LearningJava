@@ -3,6 +3,8 @@ package com.softz.identity.service;
 import com.softz.dto.UserDto;
 import com.softz.dto.request.NewUserRequest;
 import com.softz.identity.entity.User;
+import com.softz.identity.exception.AppException;
+import com.softz.identity.exception.ErrorCode;
 import com.softz.identity.mapper.UserMapper;
 import com.softz.identity.repository.UserRepository;
 
@@ -32,13 +34,13 @@ public class UserService {
     public UserDto getUserById(String userId) {
         return userRepository.findById(userId)
                 .map(userMapper::toUserDto)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
     
     public UserDto getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(userMapper::toUserDto)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
     
     public List<UserDto> getUsers() {

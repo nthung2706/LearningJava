@@ -9,7 +9,6 @@ import com.softz.dto.ApiResponse;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @SuppressWarnings("rawtypes")
     @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiResponse> handlingRuntimeException(
             RuntimeException exception) {
@@ -22,4 +21,18 @@ public class GlobalExceptionHandler {
                 .body(apiResponse);
     }
     
+
+    @ExceptionHandler(value = RuntimeException.class)
+    ResponseEntity<ApiResponse> handlingAppException(
+            AppException exception) {
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setCode(4000);
+        apiResponse.setMessage(exception.getMessage());
+
+        return ResponseEntity.badRequest()
+                .body(apiResponse);
+    }
+    
+  
 }
