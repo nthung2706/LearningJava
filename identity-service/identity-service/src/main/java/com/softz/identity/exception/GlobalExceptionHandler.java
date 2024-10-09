@@ -9,15 +9,17 @@ import com.softz.dto.ApiResponse;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = RuntimeException.class)
+    @ExceptionHandler(value = Exception.class)
     ResponseEntity<ApiResponse> handlingRuntimeException(
-            RuntimeException exception) {
+            Exception exception) {
+        ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
+        
         ApiResponse apiResponse = new ApiResponse();
 
-        apiResponse.setCode(4000);
-        apiResponse.setMessage(exception.getMessage());
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
 
-        return ResponseEntity.badRequest()
+        return ResponseEntity.status(errorCode.getStatusCode())
                 .body(apiResponse);
     }
     

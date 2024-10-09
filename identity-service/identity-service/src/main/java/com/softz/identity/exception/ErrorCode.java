@@ -9,7 +9,8 @@ import lombok.Getter;
 public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", 
             HttpStatus.INTERNAL_SERVER_ERROR),
-            USER_NOT_FOUND(404100, "User not found", HttpStatus.NOT_FOUND)   
+        USER_NOT_FOUND(404100, "User not found", HttpStatus.NOT_FOUND),
+        USER_EXISTED(409100, "User existed", HttpStatus.CONFLICT)        
         ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

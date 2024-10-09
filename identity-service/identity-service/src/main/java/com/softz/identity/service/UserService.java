@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 
@@ -25,10 +26,14 @@ public class UserService {
     UserMapper userMapper;
     public UserDto createUser(NewUserRequest newUserRequest) {
         User user = userMapper.toUser(newUserRequest);
-        user = userRepository.save(user);
-        UserDto userDto = userMapper.toUserDto(user);
+        
+        try {
+            user = userRepository.save(user);
+        } catch (DataIntegrityViolationException exception) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
 
-        return userDto;
+        return userMapper.toUserDto(user);
     }
 
     public UserDto getUserById(String userId) {
