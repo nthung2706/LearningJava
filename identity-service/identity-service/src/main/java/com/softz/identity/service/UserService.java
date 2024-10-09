@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,19 +21,7 @@ import java.util.Optional;
 public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
-
-    // public UserService(UserRepository userRepository, UserMapper userMapper) {
-    // this.userRepository = userRepository;
-    // this.userMapper = userMapper;
-    // }
-
-    // public UserService(UserRepository userRepository) {
-    // System.out.println("UserRepository:" + userRepository);
-    // this.userRepository = userRepository;
-    // }
-
     public UserDto createUser(NewUserRequest newUserRequest) {
-        // Mapping to User entity
         User user = userMapper.toUser(newUserRequest);
         user = userRepository.save(user);
         UserDto userDto = userMapper.toUserDto(user);
@@ -54,18 +41,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
     
-
-
     public List<UserDto> getUsers() {
-        // List<User> userList = userRepository.findAll();
-        // List<UserDto> userDtos = new ArrayList<>();
-
-        // for (User user : userList) {
-        // userDtos.add(userMapper.toUserDto(user));
-        // }
-        // // userRepository.findAll();
-        // return userDtos;
-
         return userRepository.findAll()
             .stream()
             .map(userMapper::toUserDto)
