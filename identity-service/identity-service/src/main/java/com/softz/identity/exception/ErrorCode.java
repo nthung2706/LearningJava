@@ -11,9 +11,9 @@ public enum ErrorCode {
     METHODARGUMENT_NOTVALIDEXCEPTION(9999, "MethodArgument NotValidException", HttpStatus.INTERNAL_SERVER_ERROR),
     USER_NOT_FOUND(404100, "User not found", HttpStatus.NOT_FOUND),
     USER_EXISTED(409100, "User existed", HttpStatus.CONFLICT),
-    INVALID_USERNAME(100100, "Username invalid", HttpStatus.BAD_REQUEST),
+    INVALID_USERNAME(100100, "Username must be in between {min} and {max}", HttpStatus.BAD_REQUEST),
+    INVALID_FIELD(100100, "{field} must be in between {min} and {max}", HttpStatus.BAD_REQUEST),
     MISSING_MESSAGE_KEY(100101, "Invalid message", HttpStatus.BAD_REQUEST),
-    
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
