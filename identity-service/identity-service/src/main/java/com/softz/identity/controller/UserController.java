@@ -4,6 +4,9 @@ import com.softz.dto.ApiResponse;
 import com.softz.dto.UserDto;
 import com.softz.dto.request.NewUserRequest;
 import com.softz.identity.service.UserService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ApiResponse<UserDto> createUser(@RequestBody NewUserRequest newUserRequest) {
+    public ApiResponse<UserDto> createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         var userDto = userService.createUser(newUserRequest);
         return ApiResponse.<UserDto>builder()
                 .result(userDto)

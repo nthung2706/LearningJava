@@ -7,11 +7,16 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
-    UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", 
-            HttpStatus.INTERNAL_SERVER_ERROR),
-        USER_NOT_FOUND(404100, "User not found", HttpStatus.NOT_FOUND),
-        USER_EXISTED(409100, "User existed", HttpStatus.CONFLICT)        
-        ;
+    UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
+    METHODARGUMENT_NOTVALIDEXCEPTION(9999, "MethodArgument NotValidException", HttpStatus.INTERNAL_SERVER_ERROR),
+    USER_NOT_FOUND(404100, "User not found", HttpStatus.NOT_FOUND),
+    USER_EXISTED(409100, "User existed", HttpStatus.CONFLICT),
+    INVALID_USERNAME(100100, "Username invalid", HttpStatus.BAD_REQUEST)
+
+    ;
+
+
+    
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;
