@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class NewUserRequest {
 
-    @Size(min = 3, max = 30, message = "INVALID_USERNAME")
+    @Size(min = 3, max = 30, message = "INVALID_USERNAMES")
 
     private String username;
     private String password;

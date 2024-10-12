@@ -38,14 +38,22 @@ public class GlobalExceptionHandler {
         MethodArgumentNotValidException exception) {
         log.error("something error code", exception);
         String key = exception.getFieldError().getDefaultMessage();
-        ErrorCode errorCode = ErrorCode.valueOf(key);
+        ErrorCode errorCode; 
+        
+            try {
+                errorCode = ErrorCode.valueOf(key);
+            } catch (Exception e) {
+                log.error("invalid message key", e);
+                errorCode = ErrorCode.MISSING_MESSAGE_KEY;
+            }
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .code(errorCode.getCode())
                 .message(errorCode.getMessage())
                 .build();
 
-        return ResponseEntity.status(errorCode.xgetStatusCode())
+    
+        return ResponseEntity.status(errorCode.getStatusCode())
                 .body(apiResponse);
     }
     
