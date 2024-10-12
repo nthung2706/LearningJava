@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -73,15 +74,40 @@ public class GlobalExceptionHandler {
     }
 
     @SuppressWarnings("rawtypes")
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    ResponseEntity<ApiResponse> handlingHttpMessageNotReadableException(
+            HttpMessageNotReadableException exception) {
+        log.error("Uncategorized error: ", exception);
+        ErrorCode errorCode = ErrorCode.INVALID_INPUT;
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setCode(errorCode.getCode());
+        apiResponse.setMessage(errorCode.getMessage());
+
+        return ResponseEntity.status(errorCode.getStatusCode())
+                .body(apiResponse);
+    }
+
+    private String buildMessage(String message, String[] params) {
+        return String.format(message, params);
+    }
+
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<ApiResponse> handlingAppException(
             AppException exception) {
         ApiResponse apiResponse = new ApiResponse();
-        ErrorCode errorCode = exception.getErrorCode();
-        apiResponse.setCode(errorCode.getCode());
-        apiResponse.setMessage(errorCode.getMessage());
 
-        return ResponseEntity.badRequest()
+        ErrorCode errorCode = exception.getErrorCode();
+
+        apiResponse.setCode(errorCode.getCode());
+
+        String message = buildMessage(errorCode.getMessage(), exception.getParams());
+
+        apiResponse.setMessage(message);
+
+        return ResponseEntity
+                .status(errorCode.getStatusCode())
                 .body(apiResponse);
     }
 
@@ -93,5 +119,10 @@ public class GlobalExceptionHandler {
 
                 .replace("{" + MAX_ATTRIBUTE + "}", maxValue);
     }
+
+    
+    
+
+
 
 }

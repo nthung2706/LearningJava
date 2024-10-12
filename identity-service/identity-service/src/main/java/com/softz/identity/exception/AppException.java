@@ -1,19 +1,17 @@
 package com.softz.identity.exception;
 
+import lombok.Getter;
+
+@Getter
 public class AppException extends RuntimeException {
 
-    public AppException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
-    }
-
+    private String[] params;
     private ErrorCode errorCode;
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(ErrorCode errorCode) {
+    public AppException(ErrorCode errorCode, String... params) {
+        super(errorCode.getMessage());
         this.errorCode = errorCode;
+        this.params = params;
     }
+    
 }
