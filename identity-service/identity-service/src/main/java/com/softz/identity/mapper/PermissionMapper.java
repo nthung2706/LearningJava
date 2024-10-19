@@ -3,9 +3,8 @@ package com.softz.identity.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-import com.softz.dto.PermissionDto;
-import com.softz.dto.request.NewPermissionRequest;
-import com.softz.dto.request.UpdatePermissionRequest;
+import com.softz.identity.dto.PermissionDto;
+import com.softz.identity.dto.request.NewPermissionRequest;
 import com.softz.identity.entity.Permission;
 
 @Mapper(componentModel = "spring")

@@ -1,8 +1,8 @@
 package com.softz.identity.mapper;
 
-import com.softz.dto.PermissionDto;
-import com.softz.dto.RoleDto;
-import com.softz.dto.request.NewRoleRequest;
+import com.softz.identity.dto.PermissionDto;
+import com.softz.identity.dto.RoleDto;
+import com.softz.identity.dto.request.NewRoleRequest;
 import com.softz.identity.entity.Permission;
 import com.softz.identity.entity.Role;
 

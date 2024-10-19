@@ -1,7 +1,7 @@
 package com.softz.identity.service;
 
-import com.softz.dto.RoleDto;
-import com.softz.dto.request.NewRoleRequest;
+import com.softz.identity.dto.RoleDto;
+import com.softz.identity.dto.request.NewRoleRequest;
 import com.softz.identity.entity.Permission;
 import com.softz.identity.entity.Role;
 import com.softz.identity.exception.AppException;
@@ -15,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -32,11 +33,14 @@ public class RoleService {
         List<Integer> idList = request.getPermissions();
         List<Permission> permissions = permissionService.getPermissions(idList);
 
-        // Validate
-        if (!CollectionUtils.isEmpty(request.getPermissions())
-                && idList.size() != permissions.size()) {
-            throw new AppException(ErrorCode.INVALID_INPUT);
-        }
+        if (!CollectionUtils.isEmpty(request.getPermissions()) && idList.size() != permissions.size()) {
+            List<Integer> invalidPermissions = idList.stream()
+            .filter(id -> permissions.stream().noneMatch(permission -> Integer.valueOf(permission.getId()).equals(id)))
+            .collect(Collectors.toList());
+    
+        
+        throw new AppException(ErrorCode.INVALID_PERMISSIONS, invalidPermissions.toString());
+}
 
         Role role = roleMapper.toRole(request);
         role.setPermissions(Set.copyOf(permissions));

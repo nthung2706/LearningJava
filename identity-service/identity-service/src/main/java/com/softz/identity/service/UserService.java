@@ -1,7 +1,8 @@
 package com.softz.identity.service;
 
-import com.softz.dto.UserDto;
-import com.softz.dto.request.NewUserRequest;
+import com.softz.identity.dto.UserDto;
+import com.softz.identity.dto.request.NewUserRequest;
+import com.softz.identity.dto.request.UpdateUserRequest;
 import com.softz.identity.entity.Role;
 import com.softz.identity.entity.User;
 import com.softz.identity.exception.AppException;
@@ -18,6 +19,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,13 +38,28 @@ public class UserService {
         if (existingUser.isPresent()) {
             throw new AppException(ErrorCode.EMAIL_EXISTED, newUserRequest.getEmail());
         }
+
+        Set<Integer> uniqueRoleIds = new HashSet<>(newUserRequest.getRoleIds());
+        if (uniqueRoleIds.size() != newUserRequest.getRoleIds().size()) {
+        throw new AppException(ErrorCode.DUPLICATE_IDS, "");
+        }
+
+        List<Integer> invalidRoleIds = uniqueRoleIds.stream()
+            .filter(roleId -> !roleRepository.existsById(roleId))
+            .collect(Collectors.toList());
+
+            if (!invalidRoleIds.isEmpty()) {
+                String invalidIds = invalidRoleIds.stream()
+                                                   .map(String::valueOf)
+                                                   .collect(Collectors.joining(", "));
+                throw new AppException(ErrorCode.INVALID_IDS, 
+                    String.format(invalidIds));
+            }
         User user = userMapper.toUser(newUserRequest);
 
-        // Lấy danh sách các vai trò từ roleIds
         Set<Role> roles = mapRoleIdsToRoles(newUserRequest.getRoleIds());
 
-        // Gán các vai trò cho người dùng
-        user.setRoles(roles); // Đảm bảo rằng user có các vai trò
+        user.setRoles(roles); 
 
         try {
             user = userRepository.save(user);
@@ -79,5 +96,25 @@ public class UserService {
                 .map(userMapper::toUserDto)
                 .toList();
 
+    }
+
+    public UserDto updateUserWithRoles(String id, UpdateUserRequest request) {
+
+        var user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        if(request.getPassword() != null && !request.getPassword().isEmpty())
+            user.setPassword(request.getPassword());
+        if(request.getDob() != null)
+            user.setDob(request.getDob());
+        if(request.getEmail() != null && !request.getEmail().isEmpty())
+            user.setEmail(request.getEmail());
+
+        if(request.getRoleIds() != null && request.getRoleIds().size() > 0){
+            Set<Role> roles = roleRepository.findAllById(request.getRoleIds()).stream().collect(Collectors.toSet());
+            user.setRoles(roles);
+            userRepository.save(user);
+        }
+        user = userRepository.save(user);        
+        return userMapper.toUserDto(user);
     }
 }

@@ -1,4 +1,4 @@
-package com.softz.dto;
+package com.softz.identity.dto;
 
 import java.util.List;
 

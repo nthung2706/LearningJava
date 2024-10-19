@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.softz.dto.ApiResponse;
+import com.softz.identity.dto.ApiResponse;
 
 import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;

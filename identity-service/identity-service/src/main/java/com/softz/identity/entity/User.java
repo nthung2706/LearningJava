@@ -1,7 +1,7 @@
 package com.softz.identity.entity;
 
+import java.time.LocalDate;
 import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,15 +28,15 @@ public class User {
     @Column(name = "username", unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci") 
     private String username;
     private String password;
-
-    @NotNull(message = "User must have at least one role")
+    private LocalDate dob;
+    @NotNull(message = "INVALID_ROLE")
     @ManyToMany(cascade = CascadeType.ALL) 
     @JoinTable(
         name = "user_roles", 
         joinColumns = @JoinColumn(name = "user_id"), 
         inverseJoinColumns = @JoinColumn(name = "role_id") 
     )
-    private Set<Role> roles; // A user can have multiple roles
+    private Set<Role> roles; 
 
     @NotNull(message = "INVALID_NOTNULL")
     @Email(message = "INVALID_EMAIL")

@@ -18,9 +18,13 @@ public enum ErrorCode {
     INVALID_DATE_OF_BIRTH(100103, "User's age must be equal or greater than {min}", HttpStatus.BAD_REQUEST),
     INVALID_INPUT(9000, "{field} invalid input", HttpStatus.BAD_REQUEST),
     USER_ID_NOT_FOUND(404102, "User %s not found", HttpStatus.NOT_FOUND),
-    INVALID_EMAIL(404103, "sai định dạng Email", HttpStatus.NOT_FOUND),
-    EMAIL_EXISTED(404105, "Email đã tồn tại", HttpStatus.NOT_FOUND),
-    INVALID_ROLE(404104, "User phải có ít nhất 1 role", HttpStatus.NOT_FOUND),
+    INVALID_EMAIL(404103, "Invalid Email", HttpStatus.NOT_FOUND),
+    EMAIL_EXISTED(404105, "Email existed", HttpStatus.NOT_FOUND),
+    INVALID_ROLE(404104, "You must assign at least one role to the user", HttpStatus.NOT_FOUND),
+    DUPLICATE_IDS(404106, "The list of roleIds must not contain duplicate elements", HttpStatus.NOT_FOUND),
+    INVALID_IDS(404107, "The roleIds are invalid: %s", HttpStatus.BAD_REQUEST),
+    INVALID_PERMISSIONS(404108, "Permissions %s not found", HttpStatus.BAD_REQUEST);
+
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

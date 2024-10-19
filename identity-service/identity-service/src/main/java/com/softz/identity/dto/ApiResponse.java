@@ -1,4 +1,4 @@
-package com.softz.dto;
+package com.softz.identity.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

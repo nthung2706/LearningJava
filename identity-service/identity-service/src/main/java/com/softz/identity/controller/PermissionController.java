@@ -1,8 +1,8 @@
 package com.softz.identity.controller;
 
-import com.softz.dto.ApiResponse;
-import com.softz.dto.PermissionDto;
-import com.softz.dto.request.NewPermissionRequest;
+import com.softz.identity.dto.ApiResponse;
+import com.softz.identity.dto.PermissionDto;
+import com.softz.identity.dto.request.NewPermissionRequest;
 import com.softz.identity.service.PermissionService;
 
 import jakarta.validation.Valid;

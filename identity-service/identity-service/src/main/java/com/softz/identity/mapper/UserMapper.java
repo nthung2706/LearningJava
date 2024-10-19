@@ -6,9 +6,9 @@ import java.util.Set;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.softz.dto.RoleDto;
-import com.softz.dto.UserDto;
-import com.softz.dto.request.NewUserRequest;
+import com.softz.identity.dto.RoleDto;
+import com.softz.identity.dto.UserDto;
+import com.softz.identity.dto.request.NewUserRequest;
 import com.softz.identity.entity.Role;
 import com.softz.identity.entity.User;
 

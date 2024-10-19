@@ -1,8 +1,8 @@
 package com.softz.identity.service;
 
-import com.softz.dto.PermissionDto;
-import com.softz.dto.request.NewPermissionRequest;
-import com.softz.dto.request.UpdatePermissionRequest;
+import com.softz.identity.dto.PermissionDto;
+import com.softz.identity.dto.request.NewPermissionRequest;
+import com.softz.identity.dto.request.UpdatePermissionRequest;
 import com.softz.identity.entity.Permission;
 import com.softz.identity.exception.AppException;
 import com.softz.identity.exception.ErrorCode;
@@ -38,11 +38,12 @@ public class PermissionService {
     }
 
     
-    // public PermissionDto getPermissionByName(String name) {
-    //     return permissionRepository.findByName(name)
-    //             .map(permissionMapper::toPermissionDto)
-    //             .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND, name));
-    // }
+    public PermissionDto getPermissionByName(String name) {
+        return permissionRepository.findByName(name)
+                .findFirst()
+                .map(permissionMapper::toPermissionDto)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND, name));
+    }
     
     public List<PermissionDto> getPermission() {
         return permissionRepository.findAll()

@@ -1,8 +1,11 @@
 package com.softz.identity.controller;
 
-import com.softz.dto.ApiResponse;
-import com.softz.dto.UserDto;
-import com.softz.dto.request.NewUserRequest;
+import com.softz.identity.dto.ApiResponse;
+import com.softz.identity.dto.UserDto;
+import com.softz.identity.dto.request.NewUserRequest;
+import com.softz.identity.dto.request.UpdateUserRequest;
+import com.softz.identity.exception.AppException;
+import com.softz.identity.exception.ErrorCode;
 import com.softz.identity.service.UserService;
 
 import jakarta.validation.Valid;
@@ -25,8 +28,8 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<ApiResponse<UserDto>> createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         if (newUserRequest.getRoleIds() == null || newUserRequest.getRoleIds().isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body(ApiResponse.<UserDto>builder().message("User must have at least one role.").build());
+            throw new AppException(ErrorCode.INVALID_ROLE);
+
         }
 
         var userDto = userService.createUser(newUserRequest);
@@ -43,13 +46,28 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public UserDto getUserById(@PathVariable("id") String userId) {
-        return userService.getUserById(userId);
+    public ApiResponse<UserDto> getUserById(@PathVariable("id") String userId) {
+        UserDto userDto = userService.getUserById(userId);
+        return ApiResponse.<UserDto>builder()
+                .result(userDto)
+                .build();
     }
-
+    
     @GetMapping("/username/{username}")
-    public UserDto getUserByUsername(@PathVariable("username") String username) {
-        return userService.getUserByUsername(username);
+    public ApiResponse<UserDto> getUserByUsername(@PathVariable("username") String username) {
+        UserDto userDto = userService.getUserByUsername(username);
+        return ApiResponse.<UserDto>builder()
+                .result(userDto)
+                .build();
     }
+    
+    @PutMapping("user/{id}")
+    public ApiResponse<UserDto> putUser(@PathVariable String id, @RequestBody UpdateUserRequest request) {
+        UserDto userDto = userService.updateUserWithRoles(id, request);
+        return ApiResponse.<UserDto>builder()
+                .result(userDto)
+                .build();
+    }
+    
 
 }
