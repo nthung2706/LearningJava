@@ -38,11 +38,11 @@ public class PermissionService {
     }
 
     
-    public PermissionDto getPermissionByName(String name) {
-        return permissionRepository.findByName(name)
-                .map(permissionMapper::toPermissionDto)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND, name));
-    }
+    // public PermissionDto getPermissionByName(String name) {
+    //     return permissionRepository.findByName(name)
+    //             .map(permissionMapper::toPermissionDto)
+    //             .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND, name));
+    // }
     
     public List<PermissionDto> getPermission() {
         return permissionRepository.findAll()
@@ -65,6 +65,8 @@ public class PermissionService {
             throw new AppException(ErrorCode.USER_EXISTED, existingPermission.getName());
         }
     }
+
+    
     
     
     
@@ -75,6 +77,12 @@ public class PermissionService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND, id.toString()));
     
         permissionRepository.delete(permission);
+    }
+
+
+
+    public List<Permission> getPermissions(List<Integer> permissions) {
+        return permissionRepository.findByIdIn(permissions);
     }
     
     

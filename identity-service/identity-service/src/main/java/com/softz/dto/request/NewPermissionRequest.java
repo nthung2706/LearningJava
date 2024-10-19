@@ -1,9 +1,6 @@
 package com.softz.dto.request;
 
 
-import java.time.LocalDate;
-
-import com.softz.identity.validator.DobConstraint;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
