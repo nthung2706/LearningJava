@@ -41,5 +41,28 @@ public class PermissionController {
         return permissionService.getPermissionByName(name);
     }
 
+    @PutMapping("/permission/{id}")
+    public ApiResponse<PermissionDto> updatePermission(
+        @PathVariable("id") Integer id, 
+        @RequestBody @Valid NewPermissionRequest updatePermissionRequest) {
+    PermissionDto updatedPermission = permissionService.updatePermission(id, updatePermissionRequest);
+    return ApiResponse.<PermissionDto>builder()
+            .result(updatedPermission)
+            .build();
+    }
+
+    
+    
+
+    @DeleteMapping("/permission/{id}")
+    public ApiResponse<Void> deletePermission(@PathVariable("id") Integer id) {
+        permissionService.deletePermission(id);
+        return ApiResponse.<Void>builder()
+                .message("Permission deleted successfully")
+                .build();
+    }
+    
+
+
 
 }

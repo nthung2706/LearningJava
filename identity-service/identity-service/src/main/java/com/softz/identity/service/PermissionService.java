@@ -2,6 +2,7 @@ package com.softz.identity.service;
 
 import com.softz.dto.PermissionDto;
 import com.softz.dto.request.NewPermissionRequest;
+import com.softz.dto.request.UpdatePermissionRequest;
 import com.softz.identity.entity.Permission;
 import com.softz.identity.exception.AppException;
 import com.softz.identity.exception.ErrorCode;
@@ -50,4 +51,31 @@ public class PermissionService {
             .toList();
 
     }
+
+    public PermissionDto updatePermission(Integer id, NewPermissionRequest updatePermissionRequest) {
+        Permission existingPermission = permissionRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND, id.toString()));
+    
+        permissionMapper.updatePermissionFromDto(updatePermissionRequest, existingPermission);
+        
+        try {
+            Permission updatedPermission = permissionRepository.save(existingPermission);
+            return permissionMapper.toPermissionDto(updatedPermission);
+        } catch (DataIntegrityViolationException exception) {
+            throw new AppException(ErrorCode.USER_EXISTED, existingPermission.getName());
+        }
+    }
+    
+    
+    
+    
+
+    public void deletePermission(Integer id) {
+        Permission permission = permissionRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND, id.toString()));
+    
+        permissionRepository.delete(permission);
+    }
+    
+    
 }
